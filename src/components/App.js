@@ -18,7 +18,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isAlertPopupOpen, setAlertPopupOpen] = useState({ isOpen: false, isSuccess: false});
+  const [isAlertPopupOpen, setIsAlertPopupOpen] = useState({ isOpen: false, isSuccess: false});
   const [selectedCard, setSelectedCard] = useState({ isOpen: false, link: '', name: '' });
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -52,8 +52,8 @@ function App() {
     setButtonText('Обновить');
   }
 
-  function handleAlertPopupClick(isSuccess) {
-    setAlertPopupOpen({ isOpen: true, isSuccess: isSuccess });
+  function handleAlertPopupClick(isSuccess = false) {
+    setIsAlertPopupOpen({ isOpen: true, isSuccess: isSuccess });
   }
 
   function handleCardClick(card) {
@@ -66,7 +66,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({ isOpen: false, link: '', name: '' });
     setDeleteCardConfirm({ isOpen: false, card: '' })
-    setAlertPopupOpen({ isOpen: false, isSuccess: '', text: ''});
+    setIsAlertPopupOpen({ ...isAlertPopupOpen, isOpen: false })
   }
 
   function handleCardLike(card) {
