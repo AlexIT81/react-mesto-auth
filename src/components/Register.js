@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Register = ({onAlertPopup}) => {
+const Register = ({ onRegister }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -18,9 +18,10 @@ const Register = ({onAlertPopup}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAlertPopup(true);
-    // здесь обработчик регистрации
+    onRegister(formValue);
+    setFormValue({ email: "", password: "" });
   };
+
   return (
     <section className='entry root__entry'>
       <h2 className='entry__title'>Регистрация</h2>

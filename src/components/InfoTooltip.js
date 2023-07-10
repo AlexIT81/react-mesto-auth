@@ -1,4 +1,4 @@
-function AlertPopup({ isOpen, onClose, isSuccess }) {
+function InfoTooltip({ isOpen, onClose, isSuccess }) {
   return (
     <div className={`popup ${isOpen ? "popup_opened" : ""}`}>
       <div className='popup__container popup__container_place_alert'>
@@ -50,4 +50,4 @@ function AlertPopup({ isOpen, onClose, isSuccess }) {
   );
 }
 
-export default AlertPopup;
+export default InfoTooltip;

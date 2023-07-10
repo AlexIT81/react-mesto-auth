@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -17,9 +17,10 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formValue);
-    // здесь обработчик регистрации
+    onLogin(formValue);
+    setFormValue({ email: "", password: "" });
   };
+
   return (
     <section className='entry root__entry'>
       <h2 className='entry__title'>Вход</h2>
