@@ -18,8 +18,9 @@ const Register = ({ onRegister }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onRegister(formValue);
-    setFormValue({ email: "", password: "" });
+    onRegister(formValue).then((res) => {
+      if (res.data) setFormValue({ email: "", password: "" });
+    });
   };
 
   return (

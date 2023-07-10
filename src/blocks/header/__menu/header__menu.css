@@ -8,8 +8,8 @@
   gap: 24px;  
 }
 
-@media (max-width: 619px) {
+@media (max-width: 918px) {
   .header__menu {
-    margin-right: 27px;
+    margin-right: 30px;
   }
 }

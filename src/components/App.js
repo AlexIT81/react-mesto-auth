@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
@@ -150,6 +150,7 @@ function App() {
     setDeleteCardConfirm({ isOpen: true, card: card });
     setButtonText("Да!");
   }
+
   /** авторизация  */
   const authorization = (token) => {
     return auth.getContent(token).then((res) => {
@@ -184,7 +185,7 @@ function App() {
     });
   };
 
-  /** авторизация пользователя */
+  /** Логинемся */
   const onLogin = ({ password, email }) => {
     return auth.login(password, email).then((res) => {
       if (res.token) {
@@ -193,25 +194,25 @@ function App() {
       } else {
         console.error(res.message);
       }
+      return res;
     });
   };
 
   /** Выход пользователя */
-  const onExit = () => {
+  const onSignOut = () => {
     setLoggedIn(false);
-    setUserEmail('');
+    setUserEmail("");
     localStorage.removeItem("jwt");
-    navigate('/sign-in')
-  }
+    navigate("/sign-in");
+  };
 
   return (
     <div className='page'>
       <div className='root page__root'>
         <CurrentUserContext.Provider value={currentUser}>
-          <Header userEmail={userEmail} onExit={onExit} />
+          <Header userEmail={userEmail} onSignOut={onSignOut} />
           <main className='root__main'>
             <Routes>
-              {/* <Route path="/" element={loggedIn ? <Main cards={cards} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDeleteConfirmClick} /> : <Navigate to="/sign-in" replace />} /> */}
               <Route
                 path='/'
                 element={
@@ -228,13 +229,21 @@ function App() {
                   />
                 }
               />
-              {/* <Route path="/sign-up" element={loggedIn ? <Login /> : <Register />} /> */}
               <Route
                 path='/sign-up'
                 element={<Register onRegister={onRegister} />}
               />
               <Route path='/sign-in' element={<Login onLogin={onLogin} />} />
-              {/* <Route path="*" element={loggedIn ? <Navigate to="/" replace /> : <Navigate to="/sign-in" replace />} /> */}
+              <Route
+                path='*'
+                element={
+                  loggedIn ? (
+                    <Navigate to='/' replace />
+                  ) : (
+                    <Navigate to='/sign-in' replace />
+                  )
+                }
+              />
             </Routes>
           </main>
           <Footer />

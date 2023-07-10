@@ -17,8 +17,9 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(formValue);
-    setFormValue({ email: "", password: "" });
+    onLogin(formValue).then((res) => {
+      if (res.token) setFormValue({ email: "", password: "" });
+    });
   };
 
   return (
