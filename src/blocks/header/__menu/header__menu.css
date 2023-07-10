@@ -5,7 +5,10 @@
   list-style-type: none;
   display: flex;
   justify-content: flex-end;
-  gap: 24px;  
+  gap: 24px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
 }
 
 @media (max-width: 918px) {
