@@ -22,7 +22,9 @@ function Main({cards, onAddPlace, onCardClick, onEditAvatar, onEditProfile, onCa
       <section className="root__elements-wrapper">
         <ul className="elements root__elements">
           {cards.map((card) => (
-            <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />
+            <li className="element" key={card._id}>
+              <Card card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />
+            </li>
           ))}
         </ul>
       </section>

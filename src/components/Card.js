@@ -20,7 +20,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   }
 
   return (
-    <li className="element" >
+    <>
       <img className="element__img" src={card.link} alt={card.name} onClick={handleClick} />
       {isOwn && <button className="element__trash main-link" type="button" onClick={handleDeleteClick}></button>}
       <div className="element__block">
@@ -30,7 +30,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
           <span className="element__icon-count">{card.likes.length}</span>
         </div>
       </div>
-    </li>
+    </>
   )
 }
 

@@ -1,75 +1,44 @@
 import { useEffect, useState } from "react";
 import logo from "../images/logo.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
+import SignUp from "./menu/SignUp";
+import SignIn from "./menu/SignIn";
+import MenuBasic from "./menu/MenuBasic";
+import MenuBurger from "./menu/MenuBurger";
 
 function Header({ userEmail, onSignOut }) {
-  const [menu, setMenu] = useState();
-  const currentUrl = useLocation().pathname;
-  const [isBurgerclicked, setIsBurgerClicked] = useState(false);
+  const [isBurgerClicked, setisBurgerClicked] = useState(false);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [isBurgerMenuActive, setIsBurgerMenuActive] = useState(false);
+
+  const updateSize = () => setWindowSize(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateSize);
+    return () => {
+      window.removeEventListener('resize', updateSize)
+    };
+  }, []);
+
+  useEffect(() => {
+    if (windowSize < 618) {
+      setIsBurgerMenuActive(true);
+    } else {
+      setIsBurgerMenuActive(false);
+    }
+  }, [windowSize])
 
   const handleBurgerMenuClick = () => {
-    setIsBurgerClicked(!isBurgerclicked);
+    setisBurgerClicked(!isBurgerClicked);
   };
 
   const handleExitClick = () => {
     onSignOut();
   };
 
-  const [windowSize, setWindowSize] = useState(window.innerWidth);
-
-  const updateSize = () => setWindowSize(window.innerWidth);
-  useEffect(() => (window.onresize = updateSize), []);
-
-  useEffect(() => {
-    if (currentUrl.endsWith("/sign-in")) {
-      setMenu(
-        <li>
-          <Link to='/sign-up' className='header__link main-link'>
-            Регистрация
-          </Link>
-        </li>
-      );
-    } else if (currentUrl.endsWith("/sign-up")) {
-      setMenu(
-        <li>
-          <Link to='/sign-in' className='header__link main-link'>
-            Войти
-          </Link>
-        </li>
-      );
-    } else {
-      windowSize > 618
-        ? setMenu(
-            <>
-              <li>{userEmail}</li>
-              <li>
-                <button
-                  type='button'
-                  className='header__btn main-link'
-                  onClick={handleExitClick}
-                >
-                  Выйти
-                </button>
-              </li>
-            </>
-          )
-        : setMenu(
-            <li>
-              <button
-                type='button'
-                className={`header__burger-btn main-link ${
-                  isBurgerclicked ? "header__burger-btn_active" : ""
-                }`}
-                onClick={handleBurgerMenuClick}
-              ></button>
-            </li>
-          );
-    }
-  }, [currentUrl, windowSize, isBurgerclicked]);
-
   return (
     <>
-      <nav className={`burger ${isBurgerclicked ? "burger_active" : ""}`}>
+      <nav className={`burger ${isBurgerClicked ? "burger_active" : ""}`}>
         <ul className='burger__menu'>
           <li>{userEmail}</li>
           <li>
@@ -91,7 +60,28 @@ function Header({ userEmail, onSignOut }) {
           <img src={logo} alt='Проект - Место.' className='header__logo' />
         </Link>
         <nav>
-          <ul className='header__menu'>{menu}</ul>
+          <ul className='header__menu'>
+            <Routes>
+              <Route path='/sign-in' element={<SignIn />} />
+              <Route path='/sign-up' element={<SignUp />} />
+              <Route
+                path='/'
+                element={
+                  isBurgerMenuActive ? (
+                    <MenuBurger
+                      isBurgerClicked={isBurgerClicked}
+                      onBurgerMenuClick={handleBurgerMenuClick}
+                    />
+                  ) : (
+                    <MenuBasic
+                      userEmail={userEmail}
+                      onExitClick={handleExitClick}
+                    />
+                  )
+                }
+              />
+            </Routes>
+          </ul>
         </nav>
       </header>
     </>

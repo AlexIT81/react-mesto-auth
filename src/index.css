@@ -59,6 +59,7 @@
 @import url(./blocks/popup/__container/_place/popup__container_place_alert.css);
 @import url(./blocks/popup/__title/_place/popup__title_place_alert.css);
 @import url(./blocks/popup/__alert-img/popup__alert-img.css);
+@import url(./blocks/popup/__img/popup__img.css);
 @import url(./blocks/entry/entry.css);
 @import url(./blocks/entry/__btn/entry__btn.css);
 @import url(./blocks/entry/__input/entry__input.css);
