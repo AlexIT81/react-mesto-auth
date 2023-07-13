@@ -8,36 +8,25 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
   const [nameError, setNameError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const currentUser = useContext(CurrentUserContext);
-  const [buttonText, setButtonText] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
     setNameError("");
     setDescriptionError("");
+    setIsFormValid(false);
   }, [currentUser, isOpen]);
 
-  useEffect(() => {
-    isLoading ? setButtonText("Сохранение...") : setButtonText("Сохранить");
-  }, [isLoading]);
-
   function handleNameChange(e) {
-    console.log(e.target.validity);
     setName(e.target.value);
-    if (!e.target.validity.valid) {
-      setNameError(e.target.validationMessage);
-    } else {
-      setNameError("");
-    }
+    setNameError(e.target.validationMessage);
+    setIsFormValid(e.target.closest("form").checkValidity());
   }
 
   function handleDescriptionChange(e) {
     setDescription(e.target.value);
-    if (!e.target.validity.valid) {
-      setDescriptionError(e.target.validationMessage);
-    } else {
-      setDescriptionError("");
-    }
+    setDescriptionError(e.target.validationMessage);
   }
 
   function handleSubmit(e) {
@@ -54,8 +43,9 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
       title={"Редактировать профиль"}
       isOpen={isOpen}
       onClose={onClose}
-      buttonText={buttonText}
+      buttonText={isLoading ? "Сохранение..." : "Сохранить"}
       onSubmit={handleSubmit}
+      isFormValid={isFormValid}
     >
       <input
         className={`popup__input popup__input_name ${

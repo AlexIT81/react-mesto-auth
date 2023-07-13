@@ -1,13 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function DeleteCardConfirmPopup({ isOpen, onClose, isLoading, onDeleteCard }) {
-  const [buttonText, setButtonText] = useState("");
-
-  useEffect(() => {
-    isLoading ? setButtonText("Удаление...") : setButtonText("Да!");
-  }, [isLoading]);
-
   function handleSubmit(e) {
     e.preventDefault();
     onDeleteCard();
@@ -19,8 +13,9 @@ function DeleteCardConfirmPopup({ isOpen, onClose, isLoading, onDeleteCard }) {
       title={"Вы уверены?"}
       isOpen={isOpen}
       onClose={onClose}
-      buttonText={buttonText}
+      buttonText={isLoading ? "Удаление..." : "Да!"}
       onSubmit={handleSubmit}
+      isFormValid={true}
     />
   );
 }

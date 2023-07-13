@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SignUp = () => {
+const SignUpHeaderButton = () => {
   return (
     <li>
       <Link to='/sign-in' className='header__link main-link'>
@@ -11,4 +11,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpHeaderButton;

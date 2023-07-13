@@ -4,27 +4,21 @@ import PopupWithForm from "./PopupWithForm";
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
   const [place, setPlace] = useState({ title: "", link: "" });
   const [placeError, setPlaceError] = useState({ title: "", link: "" });
-  const [buttonText, setButtonText] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     setPlace({ title: "", link: "" });
     setPlaceError({ title: "", link: "" });
+    setIsFormValid(false);
   }, [isOpen]);
-
-  useEffect(() => {
-    isLoading ? setButtonText("Добавление...") : setButtonText("Добавить");
-  }, [isLoading]);
 
   function handlePlaceChange(e) {
     setPlace({ ...place, [e.target.name]: e.target.value });
-    if (!e.target.validity.valid) {
-      setPlaceError({
-        ...placeError,
-        [e.target.name]: e.target.validationMessage,
-      });
-    } else {
-      setPlaceError({ title: "", link: "" });
-    }
+    setPlaceError({
+      ...placeError,
+      [e.target.name]: e.target.validationMessage,
+    });
+    setIsFormValid(e.target.closest('form').checkValidity())
   }
 
   function handleSubmit(e) {
@@ -41,8 +35,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
       title={"Новое место"}
       isOpen={isOpen}
       onClose={onClose}
-      buttonText={buttonText}
+      buttonText={isLoading ? "Добавление..." : "Добавить"}
       onSubmit={handleSubmit}
+      isFormValid={isFormValid}
     >
       <input
         className={`popup__input popup__input_title ${

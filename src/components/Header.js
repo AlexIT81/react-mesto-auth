@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import logo from "../images/logo.svg";
 import { Link, Route, Routes } from "react-router-dom";
-import SignUp from "./menu/SignUp";
-import SignIn from "./menu/SignIn";
+import SignUpHeaderButton from "./menu/SignUpHeaderButton";
+import SignInHeaderButton from "./menu/SignInHeaderButton";
 import MenuBasic from "./menu/MenuBasic";
 import MenuBurger from "./menu/MenuBurger";
 
@@ -62,8 +62,8 @@ function Header({ userEmail, onSignOut }) {
         <nav>
           <ul className='header__menu'>
             <Routes>
-              <Route path='/sign-in' element={<SignIn />} />
-              <Route path='/sign-up' element={<SignUp />} />
+              <Route path='/sign-in' element={<SignInHeaderButton />} />
+              <Route path='/sign-up' element={<SignUpHeaderButton />} />
               <Route
                 path='/'
                 element={

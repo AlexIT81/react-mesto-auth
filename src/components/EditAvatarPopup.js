@@ -4,16 +4,13 @@ import PopupWithForm from "./PopupWithForm";
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   const avatarRef = useRef();
   const [avatarError, setAvatarError] = useState("");
-  const [buttonText, setButtonText] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     avatarRef.current.value = "";
     setAvatarError("");
+    setIsFormValid(false);
   }, [isOpen]);
-
-  useEffect(() => {
-    isLoading ? setButtonText("Обновление...") : setButtonText("Обновить");
-  }, [isLoading]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -23,11 +20,8 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   }
 
   function handleAvatarChange(e) {
-    if (!e.target.validity.valid) {
-      setAvatarError(e.target.validationMessage);
-    } else {
-      setAvatarError("");
-    }
+    setAvatarError(e.target.validationMessage);
+    setIsFormValid(e.target.closest("form").checkValidity());
   }
 
   return (
@@ -36,8 +30,9 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
       title={"Обновить аватар"}
       isOpen={isOpen}
       onClose={onClose}
-      buttonText={buttonText}
+      buttonText={isLoading ? "Обновление..." : "Обновить"}
       onSubmit={handleSubmit}
+      isFormValid={isFormValid}
     >
       <input
         ref={avatarRef}

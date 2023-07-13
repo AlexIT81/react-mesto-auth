@@ -15,15 +15,17 @@ import DeleteCardConfirmPopup from "./DeleteCardConfirmPopup.js";
 import InfoTooltip from "./InfoTooltip.js";
 import ProtectedRouteElement from "./ProtectedRoute.js";
 import * as auth from "../utils/Auth.js";
+import iconSuccess from "../images/alert-yes.svg";
+import iconNotSuccess from "../images/alert-no.svg";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isinfoTooltipPopupOpen, setIsinfoTooltipPopupOpen] = useState(false);
+  const [isInfoTooltipPopupOpen, setisInfoTooltipPopupOpen] = useState(false);
   const [infoTooltipData, setInfoTooltipData] = useState({
-    isSuccess: false,
     message: "",
+    icon: ""
   });
   const [selectedCard, setSelectedCard] = useState({
     link: "",
@@ -69,9 +71,9 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
 
-  function handleInfoTooltip(isSuccess, message) {
-    setIsinfoTooltipPopupOpen(true);
-    setInfoTooltipData({ isSuccess, message });
+  function handleInfoTooltip(message, icon) {
+    setisInfoTooltipPopupOpen(true);
+    setInfoTooltipData({ message, icon });
   }
 
   function handleCardClick(card) {
@@ -86,8 +88,8 @@ function App() {
     setSelectedCard({ link: "", name: "" });
     setIsSelectedCardPopupOpen(false);
     setIsDeleteCardConfirmPopupOpen(false);
-    setIsinfoTooltipPopupOpen(false);
-    setInfoTooltipData({isSuccess: false, message: ''});
+    setisInfoTooltipPopupOpen(false);
+    setInfoTooltipData({ message: "", icon: "" });
   }
 
   function handleCardLike(card) {
@@ -190,14 +192,17 @@ function App() {
       .register(password, email)
       .then((res) => {
         if (!res || res.error) {
-          handleInfoTooltip(false, "Что-то пошло не так! Попробуйте ещё раз.");
+          handleInfoTooltip("Что-то пошло не так! Попробуйте ещё раз.", iconNotSuccess);
         } else {
-          handleInfoTooltip(true, "Вы успешно зарегистрировались!");
+          handleInfoTooltip("Вы успешно зарегистрировались!", iconSuccess);
           navigate("/sign-in", { replace: true });
         }
         return res;
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        handleInfoTooltip("Что-то пошло не так! Попробуйте ещё раз.", iconNotSuccess);
+      });
   };
 
   /** Логинемся */
@@ -291,18 +296,16 @@ function App() {
             isLoading={isDeleteCardPopupLoading}
           />
           <InfoTooltip
-            isOpen={isinfoTooltipPopupOpen}
+            isOpen={isInfoTooltipPopupOpen}
             onClose={closeAllPopups}
-            isSuccess={infoTooltipData.isSuccess}
             message={infoTooltipData.message}
+            icon={infoTooltipData.icon}
           />
-          {isSelectedCardPopupOpen && (
-            <ImagePopup
-              card={selectedCard}
-              isOpen={isSelectedCardPopupOpen}
-              onClose={closeAllPopups}
-            />
-          )}
+          <ImagePopup
+            card={selectedCard}
+            isOpen={isSelectedCardPopupOpen}
+            onClose={closeAllPopups}
+          />
         </CurrentUserContext.Provider>
       </div>
     </div>
